@@ -1,5 +1,5 @@
 # 入力するMarkdownファイル
-$inputFile = "C:\Users\user\Documents\Codex\2026-09-07\dbeaver\outputs\DBeaver_MySQL_操作ガイド.md"
+$inputFile = "C:\laragon\www\dBeaver-mysql\Markdownファイルの書き方を、見出し・箇条書き・リンクなどの例付きでまとめた日本語のガイド.md"
 
 # 同じ場所に、拡張子を.htmlにしたファイルを作成
 $outputFile = [System.IO.Path]::ChangeExtension($inputFile, ".html")

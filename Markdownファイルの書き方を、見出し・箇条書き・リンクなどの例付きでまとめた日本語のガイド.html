@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdownプレビュー</title>
+<style>
+body { max-width: 960px; margin: 40px auto; padding: 0 24px;
+       font-family: "Meiryo", sans-serif; line-height: 1.8; }
+table { border-collapse: collapse; }
+th, td { border: 1px solid #ccc; padding: 8px 12px; }
+th { background: #f0f4f8; }
+pre { background: #f5f5f5; padding: 16px; overflow-x: auto; }
+h2 { border-bottom: 1px solid #ccc; padding-bottom: 8px; }
+</style>
+</head>
+<body>
+<h1 id="markdown.md">Markdown（.md）ファイル作成ガイド</h1>
+<p>Markdownは、記号を使って見出しや箇条書きなどを記述する形式です。このガイドでは、基本の書き方と、読みやすく整えるための推奨ルールをまとめます。</p>
+<h2 id="section">1. ファイルの作成と基本設定</h2>
+<ul>
+<li>拡張子は <code>.md</code> にします。例：<code>README.md</code>、<code>操作手順.md</code></li>
+<li>文字コードは <strong>UTF-8</strong> を推奨します。</li>
+<li>ファイル名は内容が分かる名前にします。共有する場合は <code>setup-guide.md</code> のような英数字の名前も便利です。</li>
+<li>見出し・段落・リスト・コードブロックの間には、空行を入れると構造が分かりやすくなります。</li>
+<li>保存後は、利用するエディターや掲載先のプレビューで表示を確認します。</li>
+</ul>
+<blockquote>
+<p>Markdown自体には、フォント・文字サイズ・余白を統一して指定する仕組みはありません。実際の見た目は、表示先のテーマやCSSなどによって決まります。</p>
+</blockquote>
+<h2 id="section-1">2. 見出しの設定</h2>
+<p>行頭の <code>#</code> の数で、見出しの階層を指定します。<code>#</code> の後ろには半角スペースを入れます。</p>
+<pre><code class="language-markdown"># 文書タイトル（見出し1）
+
+## 大きな区分（見出し2）
+
+### 詳しい項目（見出し3）
+
+#### 補足項目（見出し4）
+
+##### 見出し5
+
+###### 見出し6
+</code></pre>
+<h3 id="section-2">推奨ルール</h3>
+<ul>
+<li>文書タイトルは <code>#</code> とし、原則として文書内に1つだけ置きます。</li>
+<li>本文の大きな区分は <code>##</code>、その中の項目は <code>###</code> にします。</li>
+<li><code>##</code> からいきなり <code>####</code> に飛ばさず、順番に階層を下げます。</li>
+<li>見出しの前後に空行を入れます。</li>
+<li>太字だけを見出しの代わりに使わず、文書構造には見出し記法を使います。</li>
+</ul>
+<p>これらは読みやすくするための推奨ルールです。Markdownの構文上、タイトルが複数あっても記述できます。</p>
+<h2 id="section-3">3. 段落と改行</h2>
+<h3 id="section-4">段落を分ける</h3>
+<p>空行を入れると、別の段落になります。</p>
+<pre><code class="language-markdown">これは最初の段落です。
+
+これは次の段落です。
+</code></pre>
+<h3 id="section-5">同じ段落の中で改行する</h3>
+<p>行末に半角スペースを2つ入れてから改行します。単にEnterキーで改行しただけの場合、表示時に改行されるかどうかは表示先によって異なります。</p>
+<p>下の例の <code>␠␠</code> は、半角スペース2つを表す説明用の記号です。実際のファイルにはスペースを入力してください。</p>
+<pre><code class="language-text">1行目の文章です。␠␠
+2行目の文章です。
+</code></pre>
+<p>HTMLを許可する表示先では <code>&lt;br&gt;</code> も使えますが、表示先によって制限される場合があります。通常は段落分けを優先すると管理しやすくなります。</p>
+<h2 id="section-6">4. 文字の装飾</h2>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>書き方</th>
+<th>表示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>太字</td>
+<td><code>**重要な内容**</code></td>
+<td><strong>重要な内容</strong></td>
+</tr>
+<tr>
+<td>斜体</td>
+<td><code>*補足する内容*</code></td>
+<td><em>補足する内容</em></td>
+</tr>
+<tr>
+<td>太字と斜体</td>
+<td><code>***特に強調する内容***</code></td>
+<td><em><strong>特に強調する内容</strong></em></td>
+</tr>
+<tr>
+<td>打ち消し線</td>
+<td><code>~~古い内容~~</code></td>
+<td><del>古い内容</del></td>
+</tr>
+<tr>
+<td>インラインコード</td>
+<td>バッククォートで囲む</td>
+<td><code>README.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>インラインコードの書き方：</p>
+<pre><code class="language-markdown">ファイル名は `README.md` です。
+</code></pre>
+<p>打ち消し線は拡張記法です。表示先によっては対応していません。また、日本語の斜体はフォントによって見た目の変化が小さい場合があります。</p>
+<h2 id="section-7">5. 箇条書きと番号付きリスト</h2>
+<h3 id="section-8">箇条書き</h3>
+<p><code>-</code> の後ろに半角スペースを入れます。記号は文書内で統一します。</p>
+<pre><code class="language-markdown">- 項目A
+- 項目B
+- 項目C
+</code></pre>
+<h3 id="section-9">番号付きリスト</h3>
+<p>手順など、順番に意味がある場合に使います。</p>
+<pre><code class="language-markdown">1. ファイルを作成します。
+2. 内容を記述します。
+3. 保存してプレビューを確認します。
+</code></pre>
+<h3 id="section-10">入れ子のリスト</h3>
+<p>子の項目を字下げします。必要な字下げ量は親のリスト記号の幅などによって変わります。次の例では半角スペース4つを使っています。</p>
+<pre><code class="language-markdown">- 設定項目
+    - ファイル名
+    - 文字コード
+- 確認項目
+    - 表示の確認
+    - リンクの確認
+</code></pre>
+<p>リストの前後には空行を入れます。短い項目同士の間には、空行を入れなくても構いません。</p>
+<h2 id="section-11">6. チェックリスト</h2>
+<p>未完了は <code>- [ ]</code>、完了は <code>- [x]</code> と書きます。</p>
+<pre><code class="language-markdown">- [x] ファイルを作成した
+- [ ] 内容を確認した
+- [ ] リンクを確認した
+</code></pre>
+<p>チェックリストはGitHub Flavored Markdown（GFM）などの拡張記法です。チェックボックスの表示やクリック操作の可否は、表示先によって異なります。</p>
+<h2 id="section-12">7. リンクと画像</h2>
+<h3 id="web">Webページへのリンク</h3>
+<pre><code class="language-markdown">[表示する文字](https://example.com)
+</code></pre>
+<h3 id="section-13">別のファイルへのリンク</h3>
+<pre><code class="language-markdown">[操作手順](./操作手順.md)
+[詳細ガイド](./docs/guide.md)
+</code></pre>
+<p>相対パスは、基本的に現在のMarkdownファイルの場所を基準にします。共有する文書では、個人のPCの絶対パスよりも相対パスを使うと扱いやすくなります。</p>
+<h3 id="section-14">同じ文書内の見出しへのリンク</h3>
+<pre><code class="language-markdown">[概要に移動](#概要)
+
+## 概要
+</code></pre>
+<p>見出しからリンク先の識別子を生成するルールは、表示先によって異なります。特に日本語・記号・同名の見出しがある場合は、実際にリンクが機能するか確認してください。</p>
+<h3 id="section-15">画像</h3>
+<p>リンク記法の前に <code>!</code> を付けます。</p>
+<pre><code class="language-markdown">![設定画面の例](./images/settings.png)
+</code></pre>
+<p>角括弧内には、画像の内容を説明する代替テキストを記述します。画像を共有するときは、参照先の画像ファイルも一緒に共有します。</p>
+<h2 id="section-16">8. コード・コマンドの記載</h2>
+<h3 id="section-17">短いコード</h3>
+<p>ファイル名、設定値、短いコマンドなどはバッククォートで囲みます。</p>
+<pre><code class="language-markdown">`config.json` の `enabled` を `true` にします。
+</code></pre>
+<h3 id="section-18">複数行のコード</h3>
+<p>バッククォート3つで囲みます。開始側に言語名を書くと、対応する表示先で色分けされます。</p>
+<pre><code class="language-markdown">```python
+print(&quot;Hello, world!&quot;)
+```
+</code></pre>
+<p>言語名の例：<code>python</code>、<code>javascript</code>、<code>json</code>、<code>bash</code>、<code>powershell</code>、<code>text</code>。</p>
+<p>コードブロックの前後には空行を入れ、閉じるバッククォートを忘れないようにします。</p>
+<h2 id="section-19">9. 引用・補足・区切り線</h2>
+<h3 id="section-20">引用</h3>
+<p>行頭に <code>&gt;</code> と半角スペースを入れます。</p>
+<pre><code class="language-markdown">&gt; ここに引用文を記述します。
+&gt;
+&gt; 空行を含む引用も記述できます。
+</code></pre>
+<p>引用する場合は、必要に応じて出典へのリンクを添えます。</p>
+<h3 id="section-21">補足</h3>
+<pre><code class="language-markdown">&gt; **補足:** 設定を変更した後は、表示を確認してください。
+</code></pre>
+<h3 id="section-22">区切り線</h3>
+<p>前後に空行を入れて <code>---</code> と書きます。</p>
+<pre><code class="language-markdown">前の内容です。
+
+---
+
+次の内容です。
+</code></pre>
+<p>文章の直後に空行なしで <code>---</code> を置くと、直前の行が見出しとして解釈される場合があります。</p>
+<h2 id="section-23">10. 表</h2>
+<p>列を <code>|</code> で区切り、見出し行の下に <code>---</code> を置きます。</p>
+<pre><code class="language-markdown">| 項目 | 設定値 | 説明 |
+| --- | --- | --- |
+| 拡張子 | .md | Markdownファイル |
+| 文字コード | UTF-8 | 日本語を含む文書に推奨 |
+</code></pre>
+<h3 id="section-24">列の配置</h3>
+<pre><code class="language-markdown">| 左寄せ | 中央寄せ | 右寄せ |
+| :--- | :---: | ---: |
+| 名前 | 状態 | 数量 |
+| サンプル | 完了 | 10 |
+</code></pre>
+<p>表はGFMなどの拡張記法です。長文や複雑な手順は、表のセルに詰め込まず、見出しやリストで記述すると読みやすくなります。</p>
+<h2 id="section-25">11. 記号をそのまま表示する</h2>
+<p>Markdownの記号を通常の文字として表示したい場合は、直前にバックスラッシュ <code>\</code> を付けます。</p>
+<pre><code class="language-markdown">\# これは見出しではありません
+\* これは箇条書きではありません
+</code></pre>
+<p>記法そのものを説明するときは、インラインコードやコードブロックで囲む方法も便利です。</p>
+<h2 id="section-26">12. タイトルや日付などの設定（必要な場合のみ）</h2>
+<p>一部の文書生成ツールやサイトでは、ファイルの先頭にYAML形式のメタデータ（フロントマター）を記述できます。</p>
+<pre><code class="language-yaml">---
+title: &quot;操作手順書&quot;
+description: &quot;初期設定と基本操作の説明&quot;
+date: &quot;2026-09-08&quot;
+tags:
+  - manual
+  - setup
+---
+</code></pre>
+<p>これはMarkdown共通の機能ではありません。対応していない表示先では、そのまま本文として表示される場合があります。使える項目や日付の扱いは、利用するツールの仕様に合わせてください。</p>
+<h2 id="section-27">13. コピーして使える文書テンプレート</h2>
+<p>以下を新しい <code>.md</code> ファイルにコピーし、必要な項目だけ残して使ってください。</p>
+<pre><code class="language-markdown"># 文書タイトル
+
+この文書の目的と対象読者を、1〜2文で記述します。
+
+## 概要
+
+何について説明する文書かを記述します。
+
+## 前提条件
+
+- 必要な環境
+- 事前に準備するもの
+
+## 手順
+
+### 1. 準備する
+
+準備する内容を記述します。
+
+### 2. 実行する
+
+具体的な操作を記述します。
+
+```text
+必要に応じて、コマンドや入力例を記述します。
+```
+
+### 3. 確認する
+
+正常に完了したと判断できる状態を記述します。
+
+## 注意点
+
+- 利用者が知っておくべき注意点を記述します。
+
+## 関連資料
+
+- [関連ドキュメント](./related.md)
+</code></pre>
+<h2 id="section-28">14. 保存前の確認</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> ファイルの拡張子が <code>.md</code> になっている</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> UTF-8で保存している</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> タイトルと見出しの階層が整理されている</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> 見出しの <code>#</code> の後ろに半角スペースがある</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> 段落や各ブロックの間に適切な空行がある</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> コードブロックが正しく閉じられている</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> リンクと画像の参照先が正しい</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> 利用する表示先のプレビューで崩れがない</li>
+</ul>
+<p>最初は「見出し・段落・箇条書き・リンク・コードブロック」を覚えるだけでも、基本的な説明書を作成できます。</p>
+
+</body>
+</html>
