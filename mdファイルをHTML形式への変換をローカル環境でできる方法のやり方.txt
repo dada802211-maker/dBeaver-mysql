@@ -1,0 +1,6 @@
+Windowsでは、PowerShellのConvertFrom-Markdownを使ってローカルで変換できます。今回の環境では、このコマンドが利用できることを確認済みです。
+1. PowerShellを開きます。
+2. 以下をまとめて貼り付けて実行します。
+3. 作成されたHTMLファイルを、Chromeにドラッグ＆ドロップします。
+別のファイルを変換するときは、$inputFileのパスだけ変更してください。同名のHTMLが存在する場合は上書きされます。変換時にファイルを外部へアップロードする必要はありません。
+※ ConvertFrom-Markdownが見つからない場合は、Windows PowerShell 5.1ではなく、PowerShell 7で実行してください。

@@ -1,0 +1,37 @@
+# 入力するMarkdownファイル
+$inputFile = "C:\Users\user\Documents\Codex\2026-09-07\dbeaver\outputs\DBeaver_MySQL_操作ガイド.md"
+
+# 同じ場所に、拡張子を.htmlにしたファイルを作成
+$outputFile = [System.IO.Path]::ChangeExtension($inputFile, ".html")
+
+# MarkdownをHTMLに変換
+$body = (ConvertFrom-Markdown -LiteralPath $inputFile).Html
+
+# 日本語の文字コードと、見やすくするためのデザインを追加
+$html = @"
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdownプレビュー</title>
+<style>
+body { max-width: 960px; margin: 40px auto; padding: 0 24px;
+       font-family: "Meiryo", sans-serif; line-height: 1.8; }
+table { border-collapse: collapse; }
+th, td { border: 1px solid #ccc; padding: 8px 12px; }
+th { background: #f0f4f8; }
+pre { background: #f5f5f5; padding: 16px; overflow-x: auto; }
+h2 { border-bottom: 1px solid #ccc; padding-bottom: 8px; }
+</style>
+</head>
+<body>
+$body
+</body>
+</html>
+"@
+
+# HTMLファイルをUTF-8で保存
+Set-Content -LiteralPath $outputFile -Value $html -Encoding utf8
+
+Write-Host "変換しました: $outputFile"

@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DBeaver MySQL 操作ガイド</title>
+<style>
+body{margin:0;background:#f3f5f8;color:#243044;font-family:"Yu Gothic","Meiryo",sans-serif;line-height:1.85}main{max-width:980px;margin:32px auto;padding:40px 48px;background:white;border-radius:12px}h1{font-size:1.9rem;line-height:1.5;color:#123b60}h2{margin-top:2.6em;border-bottom:2px solid #dce7f0;padding-bottom:.35em;color:#123b60}h3{margin-top:1.8em}table{border-collapse:collapse;width:100%;display:block;overflow-x:auto;margin:1.2em 0}td,th{border:1px solid #d6dee7;padding:9px 13px;text-align:left}th{background:#edf3f8}tr:nth-child(even){background:#f8fafc}pre{background:#17283b;color:#edf4fc;padding:20px;border-radius:8px;overflow:auto;line-height:1.65}code{font-family:Consolas,"Meiryo",monospace;background:#edf2f7;padding:2px 5px;border-radius:3px}pre code{background:none;padding:0}a{color:#076bb5;text-underline-offset:3px}hr{border:0;border-top:1px solid #d6dee7;margin:2em 0}@media(max-width:700px){main{margin:0;padding:20px;border-radius:0}h1{font-size:1.5rem}}@media print{body{background:white}main{margin:0;padding:0;max-width:none}pre{white-space:pre-wrap;background:#f2f4f7;color:black}h2,h3{break-after:avoid}tr{break-inside:avoid}}
+</style>
+</head>
+<body><main><h1 id="dbeavermysql">DBeaverでMySQLのテーブル・データを確認する操作ガイド</h1>
+<p>対象：DBeaverデスクトップ版を使い始めた方（Windowsの操作を基準）<br />
+確認日：2026年9月7日</p>
+<p>メニュー名は日本語と英語を併記しています。バージョン・言語・画面設定によって名称や配置が異なることがあります。左側の接続ツリーは「データベースナビゲータ（Database Navigator）」または「Connections」と表示されます。</p>
+<h2 id="section">1. まずテーブルのデータを表示する</h2>
+<p>MySQLへの接続が登録済みの場合は、この手順から始められます。</p>
+<ol>
+<li>DBeaverを起動します。</li>
+<li>左側の接続ツリーで、対象のMySQL接続を展開します。未接続の場合は、接続を右クリックして「接続（Connect）」を選びます。</li>
+<li>対象データベースを展開し、「テーブル（Tables）」を開きます。</li>
+<li>見たいテーブルをダブルクリックします。</li>
+<li>開いた画面の「データ（Data）」タブを選びます。</li>
+<li>行と列からなる表が表示されれば、データを確認できます。</li>
+</ol>
+<p>接続ツリーの例（フォルダ構成は設定によって異なります）：</p>
+<pre><code class="language-text">MySQL接続
+└─ データベース（Databases）
+   └─ sample_db
+      ├─ テーブル（Tables）
+      │  ├─ users
+      │  └─ orders
+      └─ ビュー（Views）
+</code></pre>
+<p>テーブルの右クリックメニューに「データを表示（View Data）」がある場合は、そこから開くこともできます。</p>
+<p><strong>覚える操作：接続 → データベース → Tables → テーブル → Data</strong></p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Database-Navigator/">接続ツリーの操作</a>、<a href="https://dbeaver.com/docs/dbeaver/Data-Editor/">データエディタ</a></p>
+<h2 id="mysql">2. MySQLへの接続を新しく登録する</h2>
+<h3 id="section-1">2.1 接続情報を用意する</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>入力例</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ホスト（Host）</td>
+<td>localhost</td>
+<td>MySQLサーバーのホスト名またはIPアドレス。localhostは自分のPCです</td>
+</tr>
+<tr>
+<td>ポート（Port）</td>
+<td>3306</td>
+<td>MySQLの一般的なポート。指定があればその番号を使います</td>
+</tr>
+<tr>
+<td>データベース（Database）</td>
+<td>sample_db</td>
+<td>接続したいデータベース名</td>
+</tr>
+<tr>
+<td>ユーザー名（Username）</td>
+<td>app_reader</td>
+<td>接続用のMySQLユーザー</td>
+</tr>
+<tr>
+<td>パスワード（Password）</td>
+<td>管理者から案内された値</td>
+<td>接続用パスワード</td>
+</tr>
+</tbody>
+</table>
+<p>上記は例です。実際の接続先の情報に置き換えてください。DBeaverをインストールしただけではMySQLサーバーは作成されません。</p>
+<h3 id="section-2">2.2 接続を作成する</h3>
+<ol>
+<li>「新しい接続（New Database Connection）」ボタンをクリックします。見つからない場合は「ファイル（File）」→「新規（New）」からデータベース接続を選びます。</li>
+<li>MySQL用ドライバーを選び、「次へ（Next）」をクリックします。MySQL 8以降では通常「MySQL」を選びます。古いサーバーでは対応するドライバーを選んでください。</li>
+<li>ホスト、ポート、データベース、ユーザー名、パスワードを入力します。</li>
+<li>「接続テスト（Test Connection）」をクリックします。</li>
+<li>初回にドライバーのダウンロードが求められたら、案内に従います。</li>
+<li>接続成功を確認し、「完了（Finish）」をクリックします。</li>
+</ol>
+<p>SSH・SSL接続が必要な環境では、管理者から指定された設定も入力します。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Create-Connection/">接続の作成</a>、<a href="https://dbeaver.com/docs/dbeaver/Database-driver-MySQL/">MySQL接続設定</a></p>
+<h2 id="section-3">3. テーブルの構造を確認する</h2>
+<p>データの中身は「Data」、列の定義は「プロパティ（Properties）」などの構造表示で確認します。</p>
+<ol>
+<li>接続ツリーでテーブルをダブルクリックします。</li>
+<li>「Properties」などの構造を表示するタブを開きます。</li>
+<li>「カラム（Columns）」を選び、列名やデータ型を確認します。</li>
+<li>必要に応じて「制約（Constraints）」「外部キー（Foreign Keys）」「インデックス（Indexes）」も確認します。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>表示項目</th>
+<th>見るポイント</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列名</td>
+<td>id、name、created_atなど、保存される項目の名前</td>
+</tr>
+<tr>
+<td>データ型</td>
+<td>INTは整数、VARCHARは文字列、DATETIMEは日時など</td>
+</tr>
+<tr>
+<td>NOT NULL</td>
+<td>値を未設定のNULLにできるか</td>
+</tr>
+<tr>
+<td>デフォルト値</td>
+<td>INSERT時に列を省略した場合などに使われる値</td>
+</tr>
+<tr>
+<td>主キー（Primary Key）</td>
+<td>行を一意に識別する列</td>
+</tr>
+<tr>
+<td>外部キー（Foreign Key）</td>
+<td>他のテーブルとの参照関係</td>
+</tr>
+<tr>
+<td>インデックス（Index）</td>
+<td>検索などに利用される索引</td>
+</tr>
+</tbody>
+</table>
+<p>「DDL」タブがある場合は、テーブル定義のSQLも確認できます。SQLで確認する方法は第7章に記載しています。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Database-Object-Editor/">データベースオブジェクトエディタ</a></p>
+<h2 id="section-4">4. データ画面の見方</h2>
+<table>
+<thead>
+<tr>
+<th>場所・項目</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列の見出し</td>
+<td>カラム名の確認</td>
+</tr>
+<tr>
+<td>各行</td>
+<td>1件ずつのレコードの確認</td>
+</tr>
+<tr>
+<td>上部のフィルター入力欄</td>
+<td>条件に合う行だけ表示</td>
+</tr>
+<tr>
+<td>Refresh（更新）</td>
+<td>データを再取得</td>
+</tr>
+<tr>
+<td>取得件数・結果件数の表示</td>
+<td>現在取得した行数などの確認</td>
+</tr>
+<tr>
+<td>Valueパネル</td>
+<td>長い文字列など、セルの内容の確認</td>
+</tr>
+</tbody>
+</table>
+<p><strong>表示中の行数がテーブル全体の件数とは限りません。</strong> DBeaverはデータを分割して取得します。続きが必要な場合は、追加取得の操作を使います。「Fetch all data（全データ取得）」は、大きいテーブルでは時間やメモリを多く使うため、先に条件で絞り込むと扱いやすくなります。</p>
+<p><code>NULL</code>は「値がない」ことを表し、空文字列や数値の0とは異なります。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Data-Editor/">データエディタ</a></p>
+<h2 id="section-5">5. 条件を指定してデータを絞り込む</h2>
+<p>以下は、対象テーブルに<code>id</code>、<code>name</code>、<code>status</code>、<code>created_at</code>、<code>email</code>列がある場合の例です。実際の列名に置き換えてください。</p>
+<h3 id="section-6">5.1 フィルター欄に条件を入力する</h3>
+<ol>
+<li>テーブルの「Data」タブを開きます。</li>
+<li>表の上にあるSQL条件用のフィルター欄に、次のような条件を入力します。</li>
+<li>Enterキー、または「フィルター適用（Apply filter criteria）」を押します。</li>
+</ol>
+<pre><code class="language-sql">id = 100
+</code></pre>
+<p>ここには通常、<code>SELECT</code>や<code>WHERE</code>を付けずに条件部分だけを書きます。</p>
+<table>
+<thead>
+<tr>
+<th>やりたいこと</th>
+<th>入力する条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IDが100の行</td>
+<td><code>id = 100</code></td>
+</tr>
+<tr>
+<td>名前が田中の行</td>
+<td><code>name = '田中'</code></td>
+</tr>
+<tr>
+<td>名前に田中を含む行</td>
+<td><code>name LIKE '%田中%'</code></td>
+</tr>
+<tr>
+<td>ステータスがactiveの行</td>
+<td><code>status = 'active'</code></td>
+</tr>
+<tr>
+<td>2026年9月1日以降の行</td>
+<td><code>created_at &gt;= '2026-09-01'</code></td>
+</tr>
+<tr>
+<td>メールアドレスがNULLの行</td>
+<td><code>email IS NULL</code></td>
+</tr>
+<tr>
+<td>2つの条件を満たす行</td>
+<td><code>status = 'active' AND id &gt;= 100</code></td>
+</tr>
+</tbody>
+</table>
+<p>文字列・日付はシングルクォートで囲みます。NULLの判定には<code>= NULL</code>ではなく<code>IS NULL</code>を使います。</p>
+<h3 id="section-7">5.2 セルの値を使って絞り込む</h3>
+<ol>
+<li>条件に使いたい値のセルを右クリックします。</li>
+<li>「Filter by value」または「Order / Filter」に相当するメニューを開きます。</li>
+<li>選択した値と一致する条件などを選び、適用します。</li>
+</ol>
+<h3 id="section-8">5.3 条件を解除する</h3>
+<p>フィルター欄の条件を削除してEnterキーを押します。並び順も含めて解除したい場合は「Remove all filters/orderings」を使います。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Data-Filters/">データのフィルター</a></p>
+<h2 id="section-9">6. 並び替え・再読み込み・コピー</h2>
+<h3 id="section-10">並び替え</h3>
+<p>セルの右クリックメニューや列のメニューから「Order / Filter」を開き、対象列の<code>ASC</code>（昇順）または<code>DESC</code>（降順）を選びます。例えばIDの大きい順に見るには<code>id DESC</code>を指定します。</p>
+<p>複数列の順序を明確に指定したい場合は、第7章のSQLの<code>ORDER BY</code>を使うと確認しやすくなります。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Data-Filters/">フィルターと並び替え</a></p>
+<h3 id="section-11">最新データへの更新</h3>
+<p>データ画面の「Refresh（更新）」をクリックします。テーブル一覧自体を更新したいときは、左側の接続ツリーで「Tables」やデータベースを右クリックし、「Refresh」を選びます。</p>
+<h3 id="section-12">コピー</h3>
+<p>必要なセル範囲を選択し、<code>Ctrl+C</code>でコピーします。列名付きなどの形式が必要なら、右クリックメニューのコピー関連項目を確認します。まとまったデータを保存する場合は、第8章のエクスポートを使います。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Data-Editor/">データエディタ</a>、<a href="https://dbeaver.com/docs/dbeaver/Database-Navigator/">接続ツリー</a></p>
+<h2 id="sql">7. SQLを書いてデータを確認する</h2>
+<h3 id="sql-1">7.1 SQLエディタを開く</h3>
+<ol>
+<li>左側の対象接続、または対象データベースを右クリックします。</li>
+<li>「SQLエディタ（SQL Editor）」から「新しいSQLスクリプト（New SQL Script）」などを選びます。</li>
+<li>エディタ上部の接続先が正しいことを確認します。</li>
+<li>SQLを入力し、実行したい文の中にカーソルを置いて<code>Ctrl+Enter</code>を押します。</li>
+<li>下部の結果（Results）を確認します。</li>
+</ol>
+<p>文字列を選択している場合は、その選択部分が実行対象になります。最初は1文ずつ実行すると結果を追いやすくなります。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/SQL-Editor/">SQLエディタ</a>、<a href="https://dbeaver.com/docs/dbeaver/SQL-Execution/">SQLの実行</a></p>
+<h3 id="sql-2">7.2 よく使う参照SQL</h3>
+<p><code>sample_db</code>と<code>users</code>、列名は例です。自分のデータベース名・テーブル名・列名に置き換えてください。これらの例は既存データの確認用で、テーブルやデータは作成しません。</p>
+<pre><code class="language-sql">-- 現在選択されているデータベースを確認（未選択ならNULL）
+SELECT DATABASE();
+
+-- 自分の権限で表示できるデータベースの一覧
+SHOW DATABASES;
+
+-- 指定したデータベースのテーブル・ビュー一覧
+SHOW TABLES FROM sample_db;
+
+-- テーブルの列定義
+SHOW COLUMNS FROM sample_db.users;
+
+-- テーブルの作成定義
+SHOW CREATE TABLE sample_db.users;
+
+-- ID順に最大100件を表示
+SELECT *
+FROM sample_db.users
+ORDER BY id
+LIMIT 100;
+
+-- 必要な列だけ表示
+SELECT id, name, email
+FROM sample_db.users
+ORDER BY id
+LIMIT 100;
+
+-- 条件に一致するデータを表示
+SELECT id, name, status
+FROM sample_db.users
+WHERE status = 'active'
+ORDER BY id DESC
+LIMIT 100;
+
+-- 作成日時が新しい順に表示。同時刻ならIDの大きい順
+SELECT id, name, created_at
+FROM sample_db.users
+ORDER BY created_at DESC, id DESC
+LIMIT 100;
+
+-- テーブル全体の件数
+SELECT COUNT(*) AS total_count
+FROM sample_db.users;
+
+-- 条件に一致する件数
+SELECT COUNT(*) AS active_count
+FROM sample_db.users
+WHERE status = 'active';
+</code></pre>
+<p><code>LIMIT 100</code>は結果を最大100件に制限します。<code>ORDER BY</code>を付けない場合、表示順は保証されません。<code>COUNT(*)</code>は画面の取得件数とは別に件数を調べますが、大きいテーブルでは時間がかかる場合があります。</p>
+<p>データベース名を含めた<code>sample_db.users</code>の形式を使うと、データベース未選択によるエラーを避けやすくなります。</p>
+<h2 id="csv">8. 表示したデータをCSVファイルに保存する</h2>
+<ol>
+<li>保存対象のテーブルの「Data」タブ、またはSQLの結果を開きます。</li>
+<li>表の中を右クリックし、「データのエクスポート（Export Data）」を選びます。</li>
+<li>形式で「CSV」を選び、「次へ（Next）」に進みます。</li>
+<li>出力対象の列と、データの抽出範囲・取得方法を確認します。</li>
+<li>ヘッダー出力、区切り文字、文字コードなどを指定します。日本語を扱う場合はUTF-8が選択肢になります。</li>
+<li>保存フォルダとファイル名を指定します。</li>
+<li>設定内容を確認して実行し、作成したCSVを開いて列名・日本語・出力件数を確認します。</li>
+</ol>
+<p>画面に表示済みの行だけを出力するのか、追加取得を含む結果全体を出力するのかは、抽出設定によって異なります。範囲を明確にしたい場合は、<code>WHERE</code>や<code>LIMIT</code>を指定したSQLの結果からエクスポートしてください。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Data-export/">データのエクスポート</a></p>
+<h2 id="section-13">9. 表示できないときの確認ポイント</h2>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>確認すること・対処</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接続できない</td>
+<td>ホスト、ポート、ユーザー名、パスワードを確認し、接続テストを実行</td>
+</tr>
+<tr>
+<td>Connection refused / タイムアウト</td>
+<td>MySQLの起動状態、接続先、VPN・SSHの必要性、ネットワークの到達性を確認</td>
+</tr>
+<tr>
+<td>Access denied</td>
+<td>認証情報と、そのユーザーに接続元からのアクセスが許可されているかを確認</td>
+</tr>
+<tr>
+<td>データベースが見えない</td>
+<td>接続先、接続設定のDatabase、表示フィルター、閲覧権限を確認</td>
+</tr>
+<tr>
+<td>テーブルが見えない</td>
+<td>対象データベースを開き直し、Tablesを更新。名前のフィルターと権限も確認</td>
+</tr>
+<tr>
+<td>テーブルを開いてもデータが出ない</td>
+<td>PropertiesではなくDataタブを選択</td>
+</tr>
+<tr>
+<td>データが0件になる</td>
+<td>フィルターを解除し、SQLのWHERE条件や接続先を確認</td>
+</tr>
+<tr>
+<td>一部の行しか見えない</td>
+<td>取得件数の上限やSQLのLIMITを確認</td>
+</tr>
+<tr>
+<td>No database selected</td>
+<td><code>データベース名.テーブル名</code>で指定、またはエディタで対象データベースを選択</td>
+</tr>
+<tr>
+<td>Table doesn't exist</td>
+<td>データベース名とテーブル名、必要に応じて大文字・小文字を確認</td>
+</tr>
+<tr>
+<td>Unknown column</td>
+<td>PropertiesのColumnsで実際の列名を確認</td>
+</tr>
+<tr>
+<td>フィルターで構文エラー</td>
+<td>WHEREを付けていないか、文字列をシングルクォートで囲んでいるかを確認</td>
+</tr>
+<tr>
+<td>更新しても値が変わらない</td>
+<td>フィルター、接続先、更新元のコミット状況、現在のトランザクション状態を確認</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section-14">10. 閲覧時に知っておくとよいこと</h2>
+<p>Data画面ではセルの編集もできます。「Save」はデータの変更を保存する操作です。誤って編集した場合は、保存する前に「Cancel」で未保存の変更を取り消します。閲覧だけなら、セルの内容を変更したり保存したりする必要はありません。</p>
+<p>参考：<a href="https://dbeaver.com/docs/dbeaver/Data-Editor/">データエディタの保存・取消</a></p>
+<h2 id="section-15">11. 操作早見表</h2>
+<table>
+<thead>
+<tr>
+<th>やりたいこと</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>テーブル一覧を見る</td>
+<td>接続 → 対象データベース → Tables</td>
+</tr>
+<tr>
+<td>テーブルの中身を見る</td>
+<td>テーブルをダブルクリック → Data</td>
+</tr>
+<tr>
+<td>列名・データ型を見る</td>
+<td>テーブルを開く → Properties → Columns</td>
+</tr>
+<tr>
+<td>行を絞り込む</td>
+<td>Data上部のフィルター欄 → 条件入力 → Enter</td>
+</tr>
+<tr>
+<td>フィルターを解除する</td>
+<td>条件を削除 → Enter</td>
+</tr>
+<tr>
+<td>並び替える</td>
+<td>セル・列のメニュー → Order / Filter → ASCまたはDESC</td>
+</tr>
+<tr>
+<td>データを読み直す</td>
+<td>データ画面のRefresh</td>
+</tr>
+<tr>
+<td>テーブル一覧を読み直す</td>
+<td>接続ツリーのTablesなどを右クリック → Refresh</td>
+</tr>
+<tr>
+<td>SQLを実行する</td>
+<td>SQLエディタで文にカーソルを置く → Ctrl+Enter</td>
+</tr>
+<tr>
+<td>件数を調べる</td>
+<td><code>SELECT COUNT(*) FROM データベース名.テーブル名;</code></td>
+</tr>
+<tr>
+<td>CSVで保存する</td>
+<td>表を右クリック → Export Data → CSV</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>本書は公式ドキュメントを参照して作成した一般的な操作ガイドです。個別の接続先に対する動作確認は行っていません。</p>
+</main></body></html>
